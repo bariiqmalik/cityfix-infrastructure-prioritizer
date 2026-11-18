@@ -1,0 +1,14 @@
+{
+  "name": "cityfix-infrastructure-prioritizer",
+  "version": "1.0.0",
+  "description": "Municipal Infrastructure Repair Prioritizer matching attached UI mockups with Custom Max-Heap prioritization",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node -e \"const { CustomMaxHeap, RepairTask } = require('./src/main/resources/static/js/maxheap-client.js'); const h = new CustomMaxHeap(); console.log('MaxHeap OK');\""
+  },
+  "keywords": ["max-heap", "infrastructure", "cityfix", "prioritizer"],
+  "author": "",
+  "license": "MIT"
+}
+

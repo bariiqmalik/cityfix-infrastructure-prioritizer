@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports - CityFix</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="brand-logo-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          <path d="M12 8v8"></path>
+          <path d="M8 12h8"></path>
+        </svg>
+      </div>
+      <a href="index.html" class="brand-title">CityFix</a>
+      <span class="brand-subtitle">Municipal Infrastructure Repair Prioritizer</span>
+    </div>
+
+    <div class="header-user-section">
+      <button class="header-notification-btn" title="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+        <span class="notification-badge"></span>
+      </button>
+
+      <div class="user-profile-widget">
+        <div class="user-avatar-circle">JD</div>
+        <div class="user-text-info">
+          <span class="user-full-name">John Doe</span>
+          <span class="user-role-label">Admin</span>
+        </div>
+        <svg class="chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+    </div>
+  </header>
+
+  <!-- App Container -->
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <ul class="sidebar-nav-list">
+        <li>
+          <a href="index.html" class="sidebar-nav-link">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="reports.html" class="sidebar-nav-link active">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <span>Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="tasks.html" class="sidebar-nav-link">
+            <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+            <span>Repair Tasks</span>
+          </a>
+        </li>
+        <li>
+          <a href="reports.html" class="sidebar-nav-link">
+            <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+            <span>Map View</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-link">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span>Users</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-link">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            <span>Analytics</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-link">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span>Settings</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer-status">
+        <div class="system-status-indicator">
+          <span class="status-dot"></span>
+          <span>System Online</span>
+        </div>
+        <div class="status-timestamp">Last updated: Apr 26, 2025 10:24 AM</div>
+      </div>
+    </aside>
+
+    <!-- Workspace -->
+    <main class="content-area">
+      <div class="page-header">
+        <h1 class="page-title">Reports</h1>
+        <p class="page-subtitle">View and manage all infrastructure issue reports from citizens.</p>
+      </div>
+
+      <!-- 4 Stat Cards -->
+      <div class="kpi-cards-grid" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="kpi-card">
+          <div class="kpi-top-row">
+            <span class="kpi-label">Total Reports</span>
+            <div class="kpi-icon-box kpi-icon-blue">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+            </div>
+          </div>
+          <div class="kpi-value">248</div>
+          <div class="kpi-trend">
+            <span>↑ 12%</span>
+            <span class="kpi-trend-context">vs. last 7 days</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-top-row">
+            <span class="kpi-label">Open Reports</span>
+            <div class="kpi-icon-box kpi-icon-red">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg>
+            </div>
+          </div>
+          <div class="kpi-value">87</div>
+          <div class="kpi-trend">
+            <span>↑ 8%</span>
+            <span class="kpi-trend-context">vs. last 7 days</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-top-row">
+            <span class="kpi-label">In Progress</span>
+            <div class="kpi-icon-box kpi-icon-amber">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+          </div>
+          <div class="kpi-value">56</div>
+          <div class="kpi-trend">
+            <span>↑ 15%</span>
+            <span class="kpi-trend-context">vs. last 7 days</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-top-row">
+            <span class="kpi-label">Resolved</span>
+            <div class="kpi-icon-box kpi-icon-green">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+          </div>
+          <div class="kpi-value">105</div>
+          <div class="kpi-trend">
+            <span>↑ 20%</span>
+            <span class="kpi-trend-context">vs. last 7 days</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters Bar -->
+      <div class="ui-card" style="margin-bottom: 22px;">
+        <div class="toolbar-filter-row" style="border-bottom: none;">
+          <div class="search-input-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="report-search-input" class="ui-search-input" placeholder="Search by location, type, or ID...">
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 13px; color: #64748B;">Issue Type</span>
+            <select id="report-type-filter" class="ui-select">
+              <option value="all">All Types</option>
+              <option value="Road Damage">Road Damage</option>
+              <option value="Broken Streetlight">Broken Streetlight</option>
+              <option value="Water Logging">Water Logging</option>
+            </select>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 13px; color: #64748B;">Status</span>
+            <select id="report-status-filter" class="ui-select">
+              <option value="all">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </div>
+
+          <div class="ui-date-picker-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span>Apr 19, 2025 - Apr 26, 2025</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map + Report Types Breakdown Row matching Screenshot -->
+      <div class="two-col-layout" style="grid-template-columns: 1.8fr 1fr; margin-bottom: 22px;">
+        <!-- Leaflet Map Container -->
+        <div class="ui-card">
+          <div class="ui-card-header" style="flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <h3 class="ui-card-title">Jurisdiction Incident Map</h3>
+              <span style="font-size: 11px; color: #16A34A; background: #DCFCE7; padding: 2px 8px; border-radius: 999px; font-weight: 600;">Free OpenStreetMap · India</span>
+            </div>
+            <div class="map-legend-row">
+              <div class="legend-item"><span class="legend-circle circle-high"></span> High</div>
+              <div class="legend-item"><span class="legend-circle circle-medium"></span> Medium</div>
+              <div class="legend-item"><span class="legend-circle circle-low"></span> Low</div>
+            </div>
+          </div>
+          <!-- Quick City Filter Toolbar for India -->
+          <div style="padding: 6px 16px; background: #F8FAFC; border-bottom: 1px solid #E2E8F0; display: flex; align-items: center; gap: 6px; overflow-x: auto;">
+            <span style="font-size: 11px; color: #64748B; font-weight: 600; white-space: nowrap;">Jump to:</span>
+            <button class="city-jump-btn" data-city="delhi" onclick="jumpToCity('delhi')" style="padding: 3px 8px; font-size: 11px; border-radius: 4px; border: 1px solid #2563EB; background: #2563EB; color: white; cursor: pointer; white-space: nowrap;">📍 Delhi NCR</button>
+            <button class="city-jump-btn" data-city="mumbai" onclick="jumpToCity('mumbai')" style="padding: 3px 8px; font-size: 11px; border-radius: 4px; border: 1px solid #CBD5E1; background: white; color: #475569; cursor: pointer; white-space: nowrap;">📍 Mumbai</button>
+            <button class="city-jump-btn" data-city="bengaluru" onclick="jumpToCity('bengaluru')" style="padding: 3px 8px; font-size: 11px; border-radius: 4px; border: 1px solid #CBD5E1; background: white; color: #475569; cursor: pointer; white-space: nowrap;">📍 Bengaluru</button>
+            <button class="city-jump-btn" data-city="kolkata" onclick="jumpToCity('kolkata')" style="padding: 3px 8px; font-size: 11px; border-radius: 4px; border: 1px solid #CBD5E1; background: white; color: #475569; cursor: pointer; white-space: nowrap;">📍 Kolkata</button>
+            <button class="city-jump-btn" data-city="chennai" onclick="jumpToCity('chennai')" style="padding: 3px 8px; font-size: 11px; border-radius: 4px; border: 1px solid #CBD5E1; background: white; color: #475569; cursor: pointer; white-space: nowrap;">📍 Chennai</button>
+            <button class="city-jump-btn" data-city="all" onclick="jumpToCity('all')" style="padding: 3px 8px; font-size: 11px; border-radius: 4px; border: 1px solid #CBD5E1; background: white; color: #475569; cursor: pointer; white-space: nowrap;">🇮🇳 All India</button>
+          </div>
+          <div id="cityfix-map" class="map-container" style="height: 320px; border-radius: 0 0 var(--radius-md) var(--radius-md);"></div>
+        </div>
+
+        <!-- Report Types Breakdown -->
+        <div class="ui-card">
+          <div class="ui-card-header">
+            <h3 class="ui-card-title">Report Types</h3>
+            <a href="#" class="view-all-link">View All →</a>
+          </div>
+          <div class="report-types-list">
+            <!-- Road Damage -->
+            <div class="report-type-item">
+              <div class="type-info-left">
+                <div class="type-badge-icon" style="background: #FEE2E2; color: #EF4444;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg>
+                </div>
+                <span class="type-label-text">Road Damage</span>
+              </div>
+              <div class="type-stat-right">
+                <span class="type-count-number">98</span>
+                <span class="type-percent-number">40%</span>
+              </div>
+            </div>
+
+            <!-- Broken Streetlight -->
+            <div class="report-type-item">
+              <div class="type-info-left">
+                <div class="type-badge-icon" style="background: #FEF3C7; color: #D97706;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"></path></svg>
+                </div>
+                <span class="type-label-text">Broken Streetlight</span>
+              </div>
+              <div class="type-stat-right">
+                <span class="type-count-number">76</span>
+                <span class="type-percent-number">31%</span>
+              </div>
+            </div>
+
+            <!-- Water Logging -->
+            <div class="report-type-item">
+              <div class="type-info-left">
+                <div class="type-badge-icon" style="background: #EFF6FF; color: #2563EB;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                </div>
+                <span class="type-label-text">Water Logging</span>
+              </div>
+              <div class="type-stat-right">
+                <span class="type-count-number">52</span>
+                <span class="type-percent-number">21%</span>
+              </div>
+            </div>
+
+            <!-- Other -->
+            <div class="report-type-item">
+              <div class="type-info-left">
+                <div class="type-badge-icon" style="background: #F1F5F9; color: #64748B;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                </div>
+                <span class="type-label-text">Other</span>
+              </div>
+              <div class="type-stat-right">
+                <span class="type-count-number">22</span>
+                <span class="type-percent-number">8%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- All Reports Table Card matching Screenshot -->
+      <div class="ui-card">
+        <div class="ui-card-header">
+          <h3 class="ui-card-title">All Reports</h3>
+          <a href="submit.html" class="btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            + New Report
+          </a>
+        </div>
+
+        <div class="table-responsive">
+          <table class="ui-data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Coordinates</th>
+                <th>Severity</th>
+                <th>Status</th>
+                <th>Reported At</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="all-reports-tbody">
+              <!-- Seed data matching screenshot exactly -->
+              <tr>
+                <td style="font-weight: 600; color: #0F172A;">#R-1042</td>
+                <td>
+                  <div class="issue-type-cell">
+                    <span class="issue-icon-dot" style="background: #FEE2E2; color: #EF4444;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg></span>
+                    <span>Road Damage</span>
+                  </div>
+                </td>
+                <td style="color: #475569;">Connaught Place & Barakhamba Rd, New Delhi</td>
+                <td style="color: #64748B; font-family: monospace; font-size: 12px;">28.6315, 77.2167</td>
+                <td><span class="badge-priority badge-priority-high">High</span></td>
+                <td><span class="badge-status badge-status-pending">Pending</span></td>
+                <td style="color: #64748B;">Apr 26, 2025 09:12 AM</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <a href="tasks.html" class="btn-outline">View</a>
+                    <button style="background: none; border: none; color: #94A3B8; cursor: pointer;">⋮</button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="font-weight: 600; color: #0F172A;">#R-1041</td>
+                <td>
+                  <div class="issue-type-cell">
+                    <span class="issue-icon-dot" style="background: #FEF3C7; color: #D97706;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18h6"></path><path d="M10 22h4"></path></svg></span>
+                    <span>Broken Streetlight</span>
+                  </div>
+                </td>
+                <td style="color: #475569;">MG Road & Brigade Rd, Bengaluru</td>
+                <td style="color: #64748B; font-family: monospace; font-size: 12px;">12.9745, 77.6080</td>
+                <td><span class="badge-priority badge-priority-medium">Medium</span></td>
+                <td><span class="badge-status badge-status-inprogress">In Progress</span></td>
+                <td style="color: #64748B;">Apr 26, 2025 08:47 AM</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <a href="tasks.html" class="btn-outline">View</a>
+                    <button style="background: none; border: none; color: #94A3B8; cursor: pointer;">⋮</button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="font-weight: 600; color: #0F172A;">#R-1040</td>
+                <td>
+                  <div class="issue-type-cell">
+                    <span class="issue-icon-dot" style="background: #EFF6FF; color: #2563EB;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg></span>
+                    <span>Water Logging</span>
+                  </div>
+                </td>
+                <td style="color: #475569;">Ring Road near AIIMS, New Delhi</td>
+                <td style="color: #64748B; font-family: monospace; font-size: 12px;">28.5684, 77.2104</td>
+                <td><span class="badge-priority badge-priority-high">High</span></td>
+                <td><span class="badge-status badge-status-pending">Pending</span></td>
+                <td style="color: #64748B;">Apr 26, 2025 08:21 AM</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <a href="tasks.html" class="btn-outline">View</a>
+                    <button style="background: none; border: none; color: #94A3B8; cursor: pointer;">⋮</button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="font-weight: 600; color: #0F172A;">#R-1039</td>
+                <td>
+                  <div class="issue-type-cell">
+                    <span class="issue-icon-dot" style="background: #FEE2E2; color: #EF4444;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg></span>
+                    <span>Road Damage</span>
+                  </div>
+                </td>
+                <td style="color: #475569;">Marine Drive & Nariman Point, Mumbai</td>
+                <td style="color: #64748B; font-family: monospace; font-size: 12px;">18.9220, 72.8258</td>
+                <td><span class="badge-priority badge-priority-medium">Medium</span></td>
+                <td><span class="badge-status badge-status-inprogress">In Progress</span></td>
+                <td style="color: #64748B;">Apr 26, 2025 07:56 AM</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <a href="tasks.html" class="btn-outline">View</a>
+                    <button style="background: none; border: none; color: #94A3B8; cursor: pointer;">⋮</button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="font-weight: 600; color: #0F172A;">#R-1038</td>
+                <td>
+                  <div class="issue-type-cell">
+                    <span class="issue-icon-dot" style="background: #FEF3C7; color: #D97706;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18h6"></path></svg></span>
+                    <span>Broken Streetlight</span>
+                  </div>
+                </td>
+                <td style="color: #475569;">Park Street & Chowringhee, Kolkata</td>
+                <td style="color: #64748B; font-family: monospace; font-size: 12px;">22.5513, 88.3524</td>
+                <td><span class="badge-priority badge-priority-low">Low</span></td>
+                <td><span class="badge-status badge-status-resolved">Resolved</span></td>
+                <td style="color: #64748B;">Apr 26, 2025 06:32 AM</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <a href="tasks.html" class="btn-outline">View</a>
+                    <button style="background: none; border: none; color: #94A3B8; cursor: pointer;">⋮</button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="font-weight: 600; color: #0F172A;">#R-1037</td>
+                <td>
+                  <div class="issue-type-cell">
+                    <span class="issue-icon-dot" style="background: #EFF6FF; color: #2563EB;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg></span>
+                    <span>Water Logging</span>
+                  </div>
+                </td>
+                <td style="color: #475569;">Anna Salai (Mount Road), Chennai</td>
+                <td style="color: #64748B; font-family: monospace; font-size: 12px;">13.0604, 80.2496</td>
+                <td><span class="badge-priority badge-priority-medium">Medium</span></td>
+                <td><span class="badge-status badge-status-open">Open</span></td>
+                <td style="color: #64748B;">Apr 26, 2025 05:14 AM</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <a href="tasks.html" class="btn-outline">View</a>
+                    <button style="background: none; border: none; color: #94A3B8; cursor: pointer;">⋮</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination Footer -->
+        <div class="pagination-footer">
+          <span class="pagination-text">Showing 1-6 of 248 reports</span>
+          <div class="pagination-controls">
+            <a href="#" class="page-btn">‹</a>
+            <a href="#" class="page-btn active">1</a>
+            <a href="#" class="page-btn">2</a>
+            <a href="#" class="page-btn">3</a>
+            <a href="#" class="page-btn">4</a>
+            <a href="#" class="page-btn">5</a>
+            <a href="#" class="page-btn">›</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/maxheap-client.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
+

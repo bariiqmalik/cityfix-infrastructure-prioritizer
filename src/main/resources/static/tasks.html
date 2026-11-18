@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repair Tasks - CityFix</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="brand-logo-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          <path d="M12 8v8"></path>
+          <path d="M8 12h8"></path>
+        </svg>
+      </div>
+      <a href="index.html" class="brand-title">CityFix</a>
+      <span class="brand-subtitle">Municipal Infrastructure Repair Prioritizer</span>
+    </div>
+
+    <div class="header-user-section">
+      <button class="header-notification-btn" title="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+        <span class="notification-badge"></span>
+      </button>
+
+      <div class="user-profile-widget">
+        <div class="user-avatar-circle">JD</div>
+        <div class="user-text-info">
+          <span class="user-full-name">John Doe</span>
+          <span class="user-role-label">Admin</span>
+        </div>
+        <svg class="chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+    </div>
+  </header>
+
+  <!-- App Layout -->
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <ul class="sidebar-nav-list">
+        <li>
+          <a href="index.html" class="sidebar-nav-link">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="reports.html" class="sidebar-nav-link">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <span>Reports</span>
+          </a>
+        </li>
+        <li>
+          <a href="tasks.html" class="sidebar-nav-link active">
+            <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+            <span>Repair Tasks</span>
+          </a>
+        </li>
+        <li>
+          <a href="reports.html" class="sidebar-nav-link">
+            <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+            <span>Map View</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-link">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span>Users</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-link">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            <span>Analytics</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-nav-link">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span>Settings</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer-status">
+        <div class="system-status-indicator">
+          <span class="status-dot"></span>
+          <span>System Online</span>
+        </div>
+        <div class="status-timestamp">Last updated: Apr 26, 2025 10:24 AM</div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="content-area">
+      <div class="page-header">
+        <h1 class="page-title">Repair Tasks</h1>
+        <p class="page-subtitle">View, manage, and track all repair tasks. Tasks are prioritized based on severity, traffic volume, and report frequency.</p>
+      </div>
+
+      <!-- 5 KPI Summary Stat Cards matching Screenshot -->
+      <div class="kpi-cards-grid" style="grid-template-columns: repeat(5, 1fr);">
+        <!-- Total Tasks -->
+        <div class="kpi-card">
+          <div class="kpi-top-row">
+            <span class="kpi-label">Total Tasks</span>
+            <div class="kpi-icon-box kpi-icon-blue">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+            </div>
+          </div>
+          <div class="kpi-value">56</div>
+          <div class="kpi-trend">
+            <span>↑ 12%</span>
+            <span class="kpi-trend-context">vs. last 7 days</span>
+          </div>
+        </div>
+
+        <!-- High Priority -->
+        <div class="kpi-card">
+          <div class="kpi-top-row">
+            <span class="kpi-label">High Priority</span>
+            <div class="kpi-icon-box kpi-icon-red">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            </div>
+          </div>
+          <div class="kpi-value">15</div>
+          <div class="kpi-trend">
+            <span>↑ 8%</span>
+            <span class="kpi-trend-context">vs. last 7 days</span>
+          </div>
+        </div>
+
+        <!-- In Progress -->
+        <div class="kpi-card">
+          <div class="kpi-top-row">
+            <span class="kpi-label">In Progress</span>
+            <div class="kpi-icon-box kpi-icon-amber">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+          </div>
+          <div class="kpi-value">22</div>
+          <div class="kpi-trend">
+            <span>↑ 14%</span>
+            <span class="kpi-trend-context">vs. last 7 days</span>
+          </div>
+        </div>
+
+        <!-- Completed -->
+        <div class="kpi-card">
+          <div class="kpi-top-row">
+            <span class="kpi-label">Completed</span>
+            <div class="kpi-icon-box kpi-icon-green">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+          </div>
+          <div class="kpi-value">14</div>
+          <div class="kpi-trend">
+            <span>↑ 20%</span>
+            <span class="kpi-trend-context">vs. last 7 days</span>
+          </div>
+        </div>
+
+        <!-- Avg. Resolution Time -->
+        <div class="kpi-card">
+          <div class="kpi-top-row">
+            <span class="kpi-label">Avg. Resolution Time</span>
+            <div class="kpi-icon-box kpi-icon-slate">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 10"></polyline></svg>
+            </div>
+          </div>
+          <div class="kpi-value">2.8 days</div>
+          <div class="kpi-trend">
+            <span>↓ 18%</span>
+            <span class="kpi-trend-context">vs. last 7 days</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Layout: Table + Task Details Panel -->
+      <div class="repair-tasks-layout">
+        <!-- Repair Tasks Main Card -->
+        <div class="ui-card">
+          <div class="ui-card-header">
+            <h3 class="ui-card-title">Repair Tasks</h3>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn-primary" onclick="dispatchExtractMax()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                Extract Next Urgent Task
+              </button>
+              <a href="submit.html" class="btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                + New Task
+              </a>
+            </div>
+          </div>
+
+          <!-- Filter Bar -->
+          <div class="toolbar-filter-row">
+            <div class="search-input-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="task-search-input" class="ui-search-input" placeholder="Search by task ID, location, or type...">
+            </div>
+
+            <select id="task-status-filter" class="ui-select">
+              <option value="all">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="resolved">Resolved</option>
+            </select>
+
+            <select id="task-priority-filter" class="ui-select">
+              <option value="all">All Priorities</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+
+            <div class="ui-date-picker-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <span>Apr 19, 2025 - Apr 26, 2025</span>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="table-responsive">
+            <table class="ui-data-table">
+              <thead>
+                <tr>
+                  <th style="width: 32px;"><input type="checkbox" style="accent-color: #2563EB;"></th>
+                  <th>ID</th>
+                  <th>Type</th>
+                  <th>Location</th>
+                  <th>Coordinates</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Reported At</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="repair-tasks-tbody">
+                <!-- Dynamically populated from CustomMaxHeap -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination Footer -->
+          <div class="pagination-footer">
+            <span class="pagination-text">Showing 1-8 of 56 tasks</span>
+            <div class="pagination-controls">
+              <a href="#" class="page-btn">‹</a>
+              <a href="#" class="page-btn active">1</a>
+              <a href="#" class="page-btn">2</a>
+              <a href="#" class="page-btn">3</a>
+              <a href="#" class="page-btn">4</a>
+              <a href="#" class="page-btn">5</a>
+              <a href="#" class="page-btn">›</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Task Details Side Drawer / Sticky Panel matching Screenshot -->
+        <div id="task-details-panel" class="task-details-panel">
+          <div class="panel-header-row">
+            <h3 class="ui-card-title">Task Details</h3>
+            <button class="panel-close-btn" onclick="document.getElementById('task-details-panel').style.display='none'">×</button>
+          </div>
+
+          <!-- Summary banner -->
+          <div class="task-summary-banner">
+            <div class="task-large-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg>
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span id="details-task-id" style="font-size: 17px; font-weight: 700; color: #0F172A;">RT-1042</span>
+                <span id="details-priority-badge" class="badge-priority badge-priority-high">High Priority</span>
+              </div>
+              <div id="details-issue-type" style="font-size: 13px; font-weight: 500; color: #64748B; margin-top: 2px;">Road Damage</div>
+            </div>
+          </div>
+
+          <!-- Metadata info list -->
+          <div class="task-meta-list">
+            <div class="task-meta-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <span>Location: <strong id="details-location">Connaught Place & Barakhamba Rd, New Delhi</strong></span>
+            </div>
+
+            <div class="task-meta-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+              <span>Coordinates: <strong id="details-coordinates">28.6315, 77.2167</strong></span>
+            </div>
+
+            <div class="task-meta-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <span>Reported At: <strong id="details-reported-at">Apr 26, 2025 09:12 AM</strong></span>
+            </div>
+
+            <div class="task-meta-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span>Reported By: <strong id="details-reported-by">Citizen #4587</strong></span>
+            </div>
+          </div>
+
+          <!-- Status Selector -->
+          <div style="margin-bottom: 18px;">
+            <label class="field-label">Status</label>
+            <select id="details-status-select" class="ui-select" style="width: 100%;">
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </div>
+
+          <!-- Description -->
+          <div class="details-description-box">
+            <label class="field-label">Description</label>
+            <p id="details-description" class="details-description-text">
+              Deep pothole and surface damage near Rajiv Chowk Metro Gate 4. Causing minor traffic disruption.
+            </p>
+          </div>
+
+          <!-- Priority Score -->
+          <div class="priority-score-showcase">
+            <label class="field-label" style="display: flex; align-items: center; gap: 4px;">
+              Priority Score
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            </label>
+            <div id="details-priority-score" class="priority-score-number">95</div>
+          </div>
+
+          <!-- Suggested Actions -->
+          <div class="suggested-actions-box">
+            <label class="field-label">Suggested Actions</label>
+            <ul class="suggested-actions-list">
+              <li>Dispatch repair crew (high priority)</li>
+              <li>Assess road condition and extent of damage</li>
+              <li>Update status after completion</li>
+            </ul>
+          </div>
+
+          <!-- Action Button -->
+          <button class="btn-update-task" onclick="updateCurrentTask()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            Update Task
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/maxheap-client.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Infrastructure Issue - CityFix Citizen Portal</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    .map-picker-container {
+      height: 220px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body style="background-color: #F8FAFC;">
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="brand-logo-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          <path d="M12 8v8"></path>
+          <path d="M8 12h8"></path>
+        </svg>
+      </div>
+      <a href="index.html" class="brand-title">CityFix</a>
+      <span class="brand-subtitle">Citizen Infrastructure Reporting Portal</span>
+    </div>
+
+    <div style="display: flex; gap: 12px;">
+      <a href="index.html" class="btn-outline">Admin Dashboard</a>
+      <a href="tasks.html" class="btn-primary">View Priority Queue</a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main style="padding: 40px 20px; max-width: 840px; margin: 0 auto;">
+    <div style="margin-bottom: 24px; text-align: center;">
+      <h1 style="font-size: 26px; font-weight: 700; color: #0F172A; margin-bottom: 6px;">Report a Municipal Issue</h1>
+      <p style="font-size: 14px; color: #64748B;">
+        Help keep our city safe and functional. Reports are analyzed in real time using our Custom Max-Heap prioritization algorithm.
+      </p>
+    </div>
+
+    <div class="citizen-form-wrapper">
+      <form id="citizen-report-form" onsubmit="handleCitizenSubmit(event)">
+        <!-- Row 1: Issue Type & Location -->
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="issueType">Issue Category *</label>
+            <select id="issueType" class="form-select" required onchange="calculateLiveUrgency()">
+              <option value="Road Damage">Road Damage / Pothole</option>
+              <option value="Broken Streetlight">Broken Streetlight / Lighting</option>
+              <option value="Water Logging">Water Logging / Drain Blockage</option>
+              <option value="Traffic Signal">Traffic Signal Failure</option>
+              <option value="Sidewalk Hazard">Sidewalk Hazard / Tree Fall</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="locationName">Street Location / Address *</label>
+            <input type="text" id="locationName" class="form-input" placeholder="e.g. Connaught Place, New Delhi or MG Road, Bengaluru" required>
+          </div>
+        </div>
+
+        <!-- Interactive Map Location Picker -->
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 8px;">
+            <label class="form-label" style="margin-bottom: 0;">Pin Location on India Map (Free OpenStreetMap)</label>
+            <span style="font-size: 11px; color: #16A34A; background: #DCFCE7; padding: 2px 8px; border-radius: 999px; font-weight: 600;">100% Free · No API Key Required</span>
+          </div>
+
+          <!-- Quick City Presets for India -->
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
+            <button type="button" class="btn-outline" style="padding: 3px 10px; font-size: 11px;" onclick="pickerJumpTo(28.6139, 77.2090, 'Connaught Place, New Delhi')">📍 Delhi NCR</button>
+            <button type="button" class="btn-outline" style="padding: 3px 10px; font-size: 11px;" onclick="pickerJumpTo(19.0760, 72.8777, 'Marine Drive, Mumbai')">📍 Mumbai</button>
+            <button type="button" class="btn-outline" style="padding: 3px 10px; font-size: 11px;" onclick="pickerJumpTo(12.9716, 77.5946, 'MG Road, Bengaluru')">📍 Bengaluru</button>
+            <button type="button" class="btn-outline" style="padding: 3px 10px; font-size: 11px;" onclick="pickerJumpTo(22.5726, 88.3639, 'Park Street, Kolkata')">📍 Kolkata</button>
+            <button type="button" class="btn-outline" style="padding: 3px 10px; font-size: 11px;" onclick="pickerJumpTo(13.0827, 80.2496, 'Anna Salai, Chennai')">📍 Chennai</button>
+            <button type="button" class="btn-outline" style="padding: 3px 10px; font-size: 11px; background: #EFF6FF; color: #2563EB; border-color: #93C5FD;" onclick="locateCitizenGPS()">🎯 My Current GPS</button>
+          </div>
+
+          <div id="picker-map" class="map-picker-container" style="height: 250px; border-radius: var(--radius-md); border: 1px solid var(--border-color);"></div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
+            <input type="text" id="latitude" class="form-input" placeholder="Latitude" value="28.6139" readonly>
+            <input type="text" id="longitude" class="form-input" placeholder="Longitude" value="77.2090" readonly>
+          </div>
+        </div>
+
+        <!-- Severity Rating (1 - 10) Slider -->
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <label class="form-label" for="severityRating">Severity Rating (Weight: 50%)</label>
+            <span style="font-size: 11px; color: #64748B;">1 = Minor cosmetic · 10 = Hazardous danger</span>
+          </div>
+          <div class="slider-container">
+            <input type="range" id="severityRating" class="slider-input" min="1" max="10" value="8" oninput="updateSliders(); calculateLiveUrgency();">
+            <span id="severityBadge" class="slider-value-badge">8 / 10</span>
+          </div>
+        </div>
+
+        <!-- Traffic Impact (1 - 10) Slider -->
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <label class="form-label" for="trafficImpact">Traffic Volume Impact (Weight: 30%)</label>
+            <span style="font-size: 11px; color: #64748B;">1 = Quiet cul-de-sac · 10 = Major arterial highway</span>
+          </div>
+          <div class="slider-container">
+            <input type="range" id="trafficImpact" class="slider-input" min="1" max="10" value="7" oninput="updateSliders(); calculateLiveUrgency();">
+            <span id="trafficBadge" class="slider-value-badge">7 / 10</span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label class="form-label" for="description">Detailed Description</label>
+          <textarea id="description" class="form-textarea" rows="3" placeholder="Describe the physical condition, hazard, or disruption..."></textarea>
+        </div>
+
+        <!-- Citizen Name / Contact -->
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="citizenName">Your Name / ID (Optional)</label>
+            <input type="text" id="citizenName" class="form-input" placeholder="Citizen #4587">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="citizenPhone">Contact Phone / Email</label>
+            <input type="text" id="citizenPhone" class="form-input" placeholder="citizen@example.com">
+          </div>
+        </div>
+
+        <!-- Real-Time Max-Heap Algorithmic Score Preview -->
+        <div class="score-preview-box">
+          <div>
+            <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: #1E40AF; letter-spacing: 0.5px;">
+              Live Custom Max-Heap Priority Projection
+            </div>
+            <div style="font-size: 12px; color: #2563EB; margin-top: 2px;">
+              Formula: (Severity × 0.5) + (Traffic × 0.3) + (Reports × 0.2) + Elapsed Penalty
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 11px; color: #64748B;">Projected Urgency Score</div>
+            <div id="liveUrgencyScore" style="font-size: 32px; font-weight: 800; color: #EF4444; line-height: 1;">81</div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 15px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          Submit Infrastructure Report
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/maxheap-client.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    let pickerMarker = null;
+    let pickerMapInstance = null;
+
+    function initPickerMap() {
+      // Default to New Delhi, India
+      const start = [28.6139, 77.2090];
+      pickerMapInstance = L.map('picker-map', { zoomControl: false }).setView(start, 13);
+      
+      // Free OpenStreetMap Tile Layer
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+      }).addTo(pickerMapInstance);
+
+      L.control.zoom({ position: 'topright' }).addTo(pickerMapInstance);
+
+      pickerMarker = L.marker(start, { draggable: true }).addTo(pickerMapInstance);
+
+      pickerMarker.on('dragend', function(e) {
+        const pos = e.target.getLatLng();
+        document.getElementById('latitude').value = pos.lat.toFixed(6);
+        document.getElementById('longitude').value = pos.lng.toFixed(6);
+      });
+
+      pickerMapInstance.on('click', function(e) {
+        pickerMarker.setLatLng(e.latlng);
+        document.getElementById('latitude').value = e.latlng.lat.toFixed(6);
+        document.getElementById('longitude').value = e.latlng.lng.toFixed(6);
+      });
+    }
+
+    function pickerJumpTo(lat, lng, defaultName) {
+      if (!pickerMapInstance || !pickerMarker) return;
+      const target = [lat, lng];
+      pickerMapInstance.flyTo(target, 14, { duration: 1.0 });
+      pickerMarker.setLatLng(target);
+      document.getElementById('latitude').value = lat.toFixed(6);
+      document.getElementById('longitude').value = lng.toFixed(6);
+      const locInput = document.getElementById('locationName');
+      if (locInput && (!locInput.value || locInput.value.includes('Maple'))) {
+        locInput.value = defaultName;
+      }
+    }
+
+    function locateCitizenGPS() {
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your browser.');
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        function(pos) {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          pickerJumpTo(lat, lng, 'My Current Location');
+        },
+        function(err) {
+          alert('Could not retrieve GPS location: ' + err.message + '. You can still click or drag the marker anywhere on the map of India.');
+        },
+        { enableHighAccuracy: true, timeout: 8000 }
+      );
+    }
+
+    function updateSliders() {
+      const sev = document.getElementById('severityRating').value;
+      const traf = document.getElementById('trafficImpact').value;
+      document.getElementById('severityBadge').innerText = `${sev} / 10`;
+      document.getElementById('trafficBadge').innerText = `${traf} / 10`;
+    }
+
+    function calculateLiveUrgency() {
+      const sev = parseInt(document.getElementById('severityRating').value) || 5;
+      const traf = parseInt(document.getElementById('trafficImpact').value) || 5;
+      const count = 1;
+
+      // Formula: (severity * 0.5) + (trafficVolume * 0.3) + (reportCount * 0.2) + (timeElapsedPenalty)
+      const raw = (sev * 0.5) + (traf * 0.3) + (count * 0.2);
+      const displayScore = Math.min(100, Math.round(raw * 10));
+
+      const elem = document.getElementById('liveUrgencyScore');
+      elem.innerText = displayScore;
+      elem.style.color = displayScore >= 80 ? '#EF4444' : (displayScore >= 60 ? '#F59E0B' : '#10B981');
+    }
+
+    async function handleCitizenSubmit(e) {
+      e.preventDefault();
+
+      const reportData = {
+        issueType: document.getElementById('issueType').value,
+        locationName: document.getElementById('locationName').value,
+        latitude: parseFloat(document.getElementById('latitude').value),
+        longitude: parseFloat(document.getElementById('longitude').value),
+        severityRating: parseInt(document.getElementById('severityRating').value),
+        trafficImpact: parseInt(document.getElementById('trafficImpact').value),
+        description: document.getElementById('description').value,
+        reportedBy: document.getElementById('citizenName').value || 'Citizen',
+        reportCount: 1,
+        status: 'pending'
+      };
+
+      // Add to client-side CustomMaxHeap
+      const task = new RepairTask({
+        taskId: 'RT-' + Math.floor(1050 + Math.random() * 8000),
+        issueType: reportData.issueType,
+        location: reportData.locationName,
+        description: reportData.description,
+        latitude: reportData.latitude,
+        longitude: reportData.longitude,
+        severity: reportData.severityRating,
+        trafficVolume: reportData.trafficImpact,
+        reportCount: 1,
+        status: 'Pending',
+        reportedBy: reportData.reportedBy
+      });
+
+      globalHeap.insert(task);
+
+      // Attempt API call to backend if running
+      try {
+        await fetch('/api/reports', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(reportData)
+        });
+      } catch (ignored) {}
+
+      alert(`Report Submitted Successfully!\nAssigned Task ID: ${task.taskId}\nCalculated Priority Score: ${task.getDisplayScore()} (Inserted into CustomMaxHeap)`);
+      window.location.href = 'tasks.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initPickerMap();
+      updateSliders();
+      calculateLiveUrgency();
+    });
+  </script>
+</body>
+</html>
+
