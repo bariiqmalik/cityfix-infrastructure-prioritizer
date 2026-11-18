@@ -139,3 +139,9 @@ node server.js
 ```
 Then navigate your browser to `http://localhost:3000/`.
 
+
+---
+
+## ⭐ Support & Star
+
+If this project helped you understand custom Priority Queues, Binary Max-Heaps, or municipal dispatch systems in Java, **please consider starring (⭐) this repository!**
